@@ -1,38 +1,72 @@
 package it.betacom.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Formatter;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "animali")
 public class Animale {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_animale")
 	private int id;
 	
-	@Column(name = "tipoAnimale", nullable = false)
+	@Column(name = "tipo_animale", nullable = false)
 	private String tipoAnimale;
 	
-	@Column(name = "nome", nullable = true)
+	@Column(name = "nome_animale", nullable = true)
 	private String nome;
 	
 	@Column(name = "matricola", nullable = false)
 	private String matricola;
 	
-	@Column(name = "dataAcquisto", nullable = false)
-	private String dataAcquisto;
+	@Column(name = "data_acquisto", nullable = false)
+	private LocalDate dataAcquisto;
 	
 	@Column(name = "prezzo", nullable = false)
 	private double prezzo;
 	
 	@ManyToOne
+	@JoinColumn(name = "id_cliente_fk") // Specifica il nome della colonna che rappresenta la chiave esterna
     private Cliente cliente;
+	
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+	
+	public Cliente getCliente() {
+		return this.cliente;
+	}
+	
+	public int getIdCliente() {
+		return this.cliente.getId();
+	}
 
 	public Animale(String tipoAnimale, String nome, String matricola, String dataAcquisto, double prezzo) {
+		super();
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+		this.tipoAnimale = tipoAnimale;
+		this.nome = nome;
+		this.matricola = matricola;
+		this.dataAcquisto = LocalDate.parse(dataAcquisto, formatter);
+		this.prezzo = prezzo;
+		
+	}
+	
+	public Animale(String tipoAnimale, String nome, String matricola, LocalDate dataAcquisto, double prezzo) {
 		super();
 		this.tipoAnimale = tipoAnimale;
 		this.nome = nome;
@@ -77,11 +111,11 @@ public class Animale {
 		this.matricola = matricola;
 	}
 
-	public String getDataAcquisto() {
+	public LocalDate getDataAcquisto() {
 		return dataAcquisto;
 	}
 
-	public void setDataAcquisto(String dataAcquisto) {
+	public void setDataAcquisto(LocalDate dataAcquisto) {
 		this.dataAcquisto = dataAcquisto;
 	}
 

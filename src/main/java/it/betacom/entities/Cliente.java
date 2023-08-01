@@ -2,36 +2,41 @@ package it.betacom.entities;
 
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "clienti")
 public class Cliente {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_cliente")
 	private int id;
 	
-	@Column(name = "nome", nullable = false, unique = false)
+	@Column(name = "nome", nullable = false)
 	private String nome;
 	
-	@Column(name = "cognome", nullable = false, unique = false)
+	@Column(name = "cognome", nullable = false)
 	private String cognome;
 
-	@Column(name = "città", nullable = true, unique = false)
+	@Column(name = "città", nullable = true)
 	private String città;
 	
-	@Column(name = "indirizzo", nullable = true, unique = false)
+	@Column(name = "indirizzo", nullable = true)
 	private String indirizzo;
 	
-	@Column(name = "telefono", nullable = true, unique = false)
+	@Column(name = "tel", nullable = true)
 	private String telefono;
 	
-	@OneToMany(mappedBy = "cliente")
+	// Relazione One-to-Many con la classe Animale
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private List<Animale> animaliAcquistati;
 	
 
